@@ -1,0 +1,11 @@
+campos vacios
+Filas vacias en la columna NumDoc=[] 
+Filas vacias en el TipoDoc=[] 
+Filas vacias en el Cod_CIE10=[] 
+Filas vacias en la fecha diagnostico=[] 
+Filas vacias en la fecha programa=[] 
+campos con valores incorrectos 
+fila incorrecta en el tipo de documento=[] 
+fila incorrecta en el Cod_CIE10=[] 
+fila incorrecta en el Seguimiento Programa=[] 
+fila incorrecta en el controlado=[] 
