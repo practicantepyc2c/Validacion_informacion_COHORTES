@@ -45,7 +45,7 @@ def envioCorreoError(nombre_archivo):
 	# agregar ese contenido al mensaje
 	mensaje.attach(parte_html)
 
-	archivo = "Errores.txt"
+	archivo = "Archivo-errores.xlsx"
 
 	with open(archivo, "rb") as adjunto:
 		contenido_adjunto = MIMEBase("application", "octet-stream")

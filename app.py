@@ -1,46 +1,60 @@
 from distutils.debug import DEBUG
+from importlib.resources import path
+from mimetypes import init
 import time
 import os
 from pathlib import Path
 from validacion import validacionInfo
+from cambiarNombre import cambiarNombre
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import win32console
+import win32gui
+from os import remove
+path = Path('Prueba')
 
-def on_created(event):
-	print("archivo creado")
-	listaDir = list(Path(path).iterdir())
-	for fichero in listaDir:
-		print(fichero, "app")
-		validacionInfo(fichero,fichero.name)
-		with open(fichero) as File:
-			File.close()
-			fichero.unlink()
+class MyEventHandler(FileSystemEventHandler):
+	def on_created(self,event):
+		print("archivo creado")
+		self.wait_file_created(event.src_path)
+		with os.scandir(path) as ficheros:
+			for fichero in ficheros:
+				fileName = fichero.name
+				validacionInfo(fichero,fileName)
+				with open(fichero, newline='', encoding="utf8") as File:
+					File.close()
+					remove(File.name)
+				
+	def on_deleted(self,event):
+		print(event.src_path,"borrado")
 
-def on_deleted(event):
-	print("archivo borrado")
+	def wait_file_created(self, source_path):
+		historicalSize = -1
+		while(historicalSize != os.path.getsize(source_path)):
+			historicalSize = os.path.getsize(source_path)
+			time.sleep(1)
 
-
-def on_moved(event):
-	print("archivo movido")
+	def on_moved(self,event):
+		print("archivo movido")
+	
 
  
-if __name__ == "__main__":
+def Observador():
+	ventana = win32console.GetConsoleWindow()
+	win32gui.ShowWindow(ventana, 0)
+	print("Proceso terminado")
 
-	event_handler = FileSystemEventHandler()
-	# llamando funciones
-	event_handler.on_created = on_created
-	event_handler.on_deleted = on_deleted
-	event_handler.on_moved = on_moved
 
-	path = Path('G:/Mi unidad/Recepción Programas EPS (File responses)/Adjuntar archivo de cohortes (File responses)/Archivos validos')
+	
 	observer = Observer()
-	observer.schedule(event_handler, path, recursive=True)
+	observer.schedule(MyEventHandler(), path , recursive=True)
 	observer.start()
 	try:
 		print("Monitoreando")
-		while True:
-			time.sleep(1)
+		while observer.is_alive():
+			observer.join(1)
 	except KeyboardInterrupt:
-		observer.stop()
-		print("Terminado")
+			observer.stop()
+			print("Terminado")
 	observer.join()
+Observador()
