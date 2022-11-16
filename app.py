@@ -11,28 +11,31 @@ from watchdog.events import FileSystemEventHandler
 import win32console
 import win32gui
 from os import remove
-path = Path('Prueba')
+path = Path('G:/Mi unidad/Recepción Programas EPS (File responses)/Adjuntar archivo de cohortes (File responses)/Archivos validos')
 
 class MyEventHandler(FileSystemEventHandler):
 	def on_created(self,event):
 		print("archivo creado")
-		self.wait_file_created(event.src_path)
-		with os.scandir(path) as ficheros:
-			for fichero in ficheros:
-				fileName = fichero.name
-				validacionInfo(fichero,fileName)
-				with open(fichero, newline='', encoding="utf8") as File:
-					File.close()
-					remove(File.name)
-				
-	def on_deleted(self,event):
-		print(event.src_path,"borrado")
+		if event.src_path.find('.xlsx'):
+			self.wait_file_created(event.src_path)
+			with os.scandir(path) as ficheros:
+				for fichero in ficheros:
+					fileName = fichero.name
+					validacionInfo(fichero,fileName)
+					with open(fichero, newline='', encoding="utf8") as File:
+						File.close()
+						remove(File.name)
 
+	# Esperar que el archivo cargue completamente
 	def wait_file_created(self, source_path):
 		historicalSize = -1
-		while(historicalSize != os.path.getsize(source_path)):
-			historicalSize = os.path.getsize(source_path)
-			time.sleep(1)
+		print(source_path)
+		try:
+			while(historicalSize != os.path.getsize(source_path)):
+				historicalSize = os.path.getsize(source_path)
+				time.sleep(2)
+		except:
+			Observador()
 
 	def on_moved(self,event):
 		print("archivo movido")
@@ -40,8 +43,9 @@ class MyEventHandler(FileSystemEventHandler):
 
  
 def Observador():
-	ventana = win32console.GetConsoleWindow()
-	win32gui.ShowWindow(ventana, 0)
+	# Cerrar terminal que corre el script
+	# ventana = win32console.GetConsoleWindow()
+	# win32gui.ShowWindow(ventana, 0)
 	print("Proceso terminado")
 
 
