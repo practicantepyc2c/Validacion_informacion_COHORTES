@@ -5,7 +5,6 @@ import time
 import os
 from pathlib import Path
 from validacion import validacionInfo
-from cambiarNombre import cambiarNombre
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import win32console
@@ -44,9 +43,9 @@ class MyEventHandler(FileSystemEventHandler):
  
 def Observador():
 	# Cerrar terminal que corre el script
-	# ventana = win32console.GetConsoleWindow()
-	# win32gui.ShowWindow(ventana, 0)
-	print("Proceso terminado")
+	ventana = win32console.GetConsoleWindow()
+	win32gui.ShowWindow(ventana, 0)
+	# print("Proceso en segundo plano")
 
 
 	

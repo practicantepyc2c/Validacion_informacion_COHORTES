@@ -11,7 +11,7 @@ import time
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # here enter the id of your google sheet
-SAMPLE_SPREADSHEET_ID_input = '1TmGeY3iiD5XP3HsUPgirXpOewL9c_0JwcrcS2QcvDzY'
+SAMPLE_SPREADSHEET_ID_input = '1xlBiWPL_QVa5L6qclFU-Me9OgeFTqegr9mXNoI1MNd8'
 SAMPLE_RANGE_NAME = 'A1:AA1000'
 
 def ultimoCorreo(archivo):
